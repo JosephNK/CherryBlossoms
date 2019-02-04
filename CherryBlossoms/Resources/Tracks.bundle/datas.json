@@ -1,0 +1,94 @@
+{
+	"tracks": [
+		{
+			"identifier": "1",
+			"trackName": "Mourning Day",
+    		"albumName": "",
+    		"artistName": "SadMe",
+    		"albumImageName": "SadMe_-_Mourning_Day.jpg",
+    		"fileName": "SadMe_-_Mourning_Day.mp3",
+    		"description": "Written by Masha SadMe Vocals, keys - Masha SadMe Guitars - Vova Panko Bass - Dima Belyaev Drums - Roman Titenshtein Cello - Daniil Gubanov Recorded and mixed by Vladimir Erin Produced by Masha SadMe"
+		},
+		{
+			"identifier": "2",
+			"trackName": "Wild Heart",
+    		"albumName": "",
+    		"artistName": "Omonoko",
+    		"albumImageName": "Omonoko_-_Wild_Heart.jpg",
+    		"fileName": "Omonoko_-_Wild_Heart.mp3",
+    		"description": "Vocals and Guitar - Brendan Fitzpatrick Guitar and Vocals - Ryan Fitzpatrick Bass - Padraig Mcloughlin Drums and percusion - Martin Mcloughlin"
+		},
+		{
+			"identifier": "3",
+			"trackName": "All I Need Is You",
+    		"albumName": "",
+    		"artistName": "SemMueL",
+    		"albumImageName": "SemMueL_-_All_I_Need_Is_You.jpg",
+    		"fileName": "SemMueL_-_All_I_Need_Is_You.mp3",
+    		"description": "For more information about SemMueL's upcoming projects, visit http://semmuel.com/"
+		},
+		{
+			"identifier": "4",
+			"trackName": "Chances",
+    		"albumName": "",
+    		"artistName": "The Devil Music Co.",
+    		"albumImageName": "The_Devil_Music_Co._-_Chances.jpg",
+    		"fileName": "The_Devil_Music_Co._-_Chances.mp3",
+    		"description": "Written by Marshall Mckellar Produced by Justin Kay"
+		},
+		{
+			"identifier": "5",
+			"trackName": "By Your Side by Mallz & Deron Alek",
+    		"albumName": "",
+    		"artistName": "Cartel",
+    		"albumImageName": "Cartel_-_By_Your_Side_by_Mallz__amp__Deron_Alek.jpg",
+    		"fileName": "Cartel_-_By_Your_Side_by_Mallz__amp__Deron_Alek.mp3",
+    		"description": "The problem of being 'friends with benefits' is that eventually, someone catches feelings and wants to become more than what they are. Mallz and Deron Alek speak on just such a situation over a track by Hoodgrown Productions. Also check out our lyric video here: https://www.youtube.com/watch?v=FsawUmOlPHo"
+		},
+		{
+			"identifier": "6",
+			"trackName": "Boomerang",
+    		"albumName": "",
+    		"artistName": "HoneyChrome",
+    		"albumImageName": "HoneyChrome_-_Boomerang.jpg",
+    		"fileName": "HoneyChrome_-_Boomerang.mp3",
+    		"description": "A flirtatious pop song about a new crush."
+		},
+		{
+			"identifier": "7",
+			"trackName": "Ocean",
+    		"albumName": "",
+    		"artistName": "ISRA",
+    		"albumImageName": "ISRA_-_Ocean.jpg",
+    		"fileName": "ISRA_-_Ocean.mp3",
+    		"description": "Artwork: Mikkel Friis"
+		},
+		{
+			"identifier": "8",
+			"trackName": "Astronauts",
+    		"albumName": "",
+    		"artistName": "Parker",
+    		"albumImageName": "Parker_-_Astronauts.jpg",
+    		"fileName": "Parker_-_Astronauts.mp3",
+    		"description": "Astronauts is a futuristic synth song about being stuck on the moon. Featuring high falsetto voices & the warbling sounds of the MICROKORG, 'Astronauts' is a love song about missing Earth and the isolation of space."
+		},
+		{
+			"identifier": "9",
+			"trackName": "Closure",
+    		"albumName": "",
+    		"artistName": "Seth Power",
+    		"albumImageName": "Seth_Power_-_Closure.jpg",
+    		"fileName": "Seth_Power_-_Closure.mp3",
+    		"description": "'Closure' is the first single from Seth Power's upcoming album, 'Souvenir.' In true vintage style, the album will be released digitally in 2 sides. The A side will be out in the fall of 2018, followed by the B side in the winter of 2019. Be sure to follow Power's socials to keep up with the releases in real time. Enjoy :D"
+		},
+		{
+			"identifier": "10",
+			"trackName": "Unnamed Song (Of A Fake Unicorn)",
+    		"albumName": "",
+    		"artistName": "The Freak Fandango Orchestra",
+    		"albumImageName": "The_Freak_Fandango_Orchestra_-_Unnamed_Song__Of_A_Fake_Unicorn_.jpg",
+    		"fileName": "The_Freak_Fandango_Orchestra_-_Unnamed_Song__Of_A_Fake_Unicorn_.mp3",
+    		"description": ""
+		},
+	]
+}
