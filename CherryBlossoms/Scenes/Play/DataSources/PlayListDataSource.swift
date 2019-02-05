@@ -12,21 +12,22 @@ struct PlayListCellType {
 	static let playListCell = "PlayListTableViewCell"
 }
 
-class PlayListDataSource: NSObject, UITableViewDataSource {
+class PlayListDataSource: NSObject {
 	
 	var playlist: [PlayListItem] = []
 	
 	weak var player: SwiftyMusicPlayer?
-	
 	
 	func register(for tableView: UITableView) -> PlayListDataSource {
 		tableView.register(PlayListTableViewCell.self, forCellReuseIdentifier: PlayListCellType.playListCell)
 		return self
 	}
 	
-	//
-	// MARK: - UITableViewDataSource
-	//
+}
+
+// MARK: - UITableViewDataSource
+extension PlayListDataSource: UITableViewDataSource {
+	
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
