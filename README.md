@@ -11,7 +11,7 @@ This is Sample Music App.
 
 ## Sample Music File 
 
-1. [Mourning Day - SadMe]((https://www.jamendo.com/track/1615623/mourning-day)) (CC BY NC ND)
+1. [Mourning Day - SadMe](https://www.jamendo.com/track/1615623/mourning-day) (CC BY NC ND)
 2. [Wild Heart - Omonoko](https://www.jamendo.com/track/1609779/wild-heart) (CC BY NC ND)
 3. [All I Need Is You - SemMueL](https://www.jamendo.com/track/1592741/all-i-need-is-you) (CC BY NC ND)
 4. [Chances - The Devil Music Co.](https://www.jamendo.com/track/1586071/chances) (CC BY NC ND)
