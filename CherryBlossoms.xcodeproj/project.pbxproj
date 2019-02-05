@@ -237,8 +237,8 @@
 				6F1DB81722016CE80057F72D /* BaseView.swift */,
 				6F0AA90F220A008900121CFD /* BaseTableView.swift */,
 				6F1AF7C221F826D70011CB58 /* BaseTableViewCell.swift */,
-				6F1AF7C421F826D70011CB58 /* BaseCollectionViewCell.swift */,
 				6F1AF7C521F826D70011CB58 /* BaseTableViewHeaderFooterView.swift */,
+				6F1AF7C421F826D70011CB58 /* BaseCollectionViewCell.swift */,
 				6F1AF7C121F826D70011CB58 /* BaseViewController.swift */,
 				6F1AF7C321F826D70011CB58 /* BaseTableViewController.swift */,
 			);
