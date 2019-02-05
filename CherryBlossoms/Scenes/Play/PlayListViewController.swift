@@ -20,7 +20,7 @@ class PlayListViewController: BaseLayoutViewController {
 	
 	fileprivate lazy var playTableView: PlayListTableView = {
 		[unowned self] in
-		var view = PlayListTableView(frame: self.view.frame)
+		var view = PlayListTableView.init(frame: self.view.frame, style: UITableView.Style.grouped)
 		view.player = self.player
 		view.playlist = self.playlist
 		return view

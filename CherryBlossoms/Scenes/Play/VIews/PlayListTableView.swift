@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayListTableView: BaseLayoutView {
+class PlayListTableView: BaseLayoutTableView {
 	
 	weak var player: SwiftyMusicPlayer? {
 		didSet {
@@ -24,18 +24,7 @@ class PlayListTableView: BaseLayoutView {
 		}
 	}
 	
-	fileprivate var dataSource: PlayListDataSource!
-	
-	fileprivate lazy var tableView: UITableView = {
-		[unowned self] in
-		let tableView = UITableView.init(frame: self.frame, style: UITableView.Style.grouped)
-		tableView.dataSource = self.dataSource.register(for: tableView)
-		tableView.delegate = self
-		tableView.separatorColor = UIColor.white
-		tableView.backgroundColor = UIColor.white
-		tableView.bounces = false
-		return tableView
-	}()
+	fileprivate var playListDataSource: PlayListDataSource!
 	
 	fileprivate lazy var headerView: PlayListHeaderView = {
 		[unowned self] in
@@ -56,17 +45,18 @@ class PlayListTableView: BaseLayoutView {
 extension PlayListTableView {
 	
 	func setupView() {
-		dataSource = PlayListDataSource()
+		playListDataSource = PlayListDataSource()
 		
-		tableView.tableHeaderView = headerView
-		self.addSubview(tableView)
-		
+		self.tableHeaderView = headerView
+		self.dataSource = playListDataSource.register(for: self)
+		self.delegate = self
+		self.separatorColor = UIColor.white
+		self.backgroundColor = UIColor.white
+		self.bounces = false
 	}
 
 	func setupLayout() {
-		tableView.snp.makeConstraints { (make) in
-			make.top.left.right.bottom.equalTo(self)
-		}
+		
 	}
 	
 }
@@ -111,17 +101,16 @@ extension PlayListTableView: UITableViewDelegate {
 extension PlayListTableView {
 	
 	func updateContentInset(_ contentInset: UIEdgeInsets) {
-		//tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 110.0, right: 0.0)
-		tableView.contentInset = contentInset
+		self.contentInset = contentInset
 	}
 	
 	func updateDataSource() {
-		dataSource.player = self.player
-		dataSource.playlist = self.playlist
+		playListDataSource.player = self.player
+		playListDataSource.playlist = self.playlist
 	}
 	
 	func updateReloadData() {
-		tableView.reloadData()
+		self.reloadData()
 	}
 	
 	func updateHeaderPlayItem(_ playItem: PlayListItem?) {
