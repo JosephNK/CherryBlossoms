@@ -8,15 +8,28 @@
 
 import UIKit
 
+typealias BaseLayoutCollectionViewCell = BaseCollectionViewCell & BaseLayout
+
 class BaseCollectionViewCell: UICollectionViewCell {
+	
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        initialization()
+		setup()
+		initialization()
     }
     
-    func initialization() {
-        
-    }
+	func setup() {
+		guard let layoutView = self as? BaseLayoutCollectionViewCell else {
+			return
+		}
+		
+		layoutView.setupView()
+		layoutView.setupLayout()
+	}
+	
+	func initialization() {
+		
+	}
     
 }

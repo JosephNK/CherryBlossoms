@@ -8,5 +8,6 @@ target 'CherryBlossoms' do
   # Pods for CherryBlossoms
   pod 'SnapKit', '~> 4.2.0'
   pod 'CocoaLumberjack/Swift', '~> 3.4.2'
-  
+  pod 'RxSwift', '~> 4.4.0'
+  pod 'RxCocoa', '~> 4.4.0'
 end

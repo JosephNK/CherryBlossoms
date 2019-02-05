@@ -8,28 +8,51 @@
 
 import UIKit
 
-class BaseView: UIView {
+typealias BaseLayoutView = BaseView & BaseLayout
 
+class BaseView: UIView {
+	
+	weak var baseLayout: BaseLayout?
+	
+	var parameter: Any?
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
+		setup()
 		initialization()
-		setupLayout()
 	}
 	
 	convenience init() {
 		self.init(frame: CGRect.zero)
 	}
 	
+	convenience init(frame: CGRect, parameter: Any) {
+		self.init(frame: frame)
+		
+		self.parameter = parameter
+	}
+	
+	convenience init(parameter: Any) {
+		self.init(frame: CGRect.zero)
+		
+		self.parameter = parameter
+	}
+	
 	required init(coder aDecoder: NSCoder) {
 		fatalError("This class does not support NSCoding")
 	}
-
-	func initialization() {
+	
+	func setup() {
+		guard let layoutView = self as? BaseLayoutView else {
+			return
+		}
 		
+		layoutView.setupView()
+		layoutView.setupLayout()
 	}
 	
-	func setupLayout() {
+	func initialization() {
 		
 	}
 	

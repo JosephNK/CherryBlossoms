@@ -8,27 +8,29 @@
 
 import UIKit
 
+typealias BaseLayoutTableViewCell = BaseTableViewCell & BaseLayout
+
 class BaseTableViewCell: UITableViewCell {
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
+		setup()
 		initialization()
-		setupLayout()
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		
+		setup()
 		initialization()
-		setupLayout()
 	}
 	
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+		
+		setup()
         initialization()
-		setupLayout()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -37,12 +39,17 @@ class BaseTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func initialization() {
-        self.selectionStyle = .none
-    }
-	
-	func setupLayout() {
+	func setup() {
+		guard let layoutView = self as? BaseLayoutTableViewCell else {
+			return
+		}
 		
+		layoutView.setupView()
+		layoutView.setupLayout()
+	}
+	
+	func initialization() {
+		self.selectionStyle = .none
 	}
     
 }

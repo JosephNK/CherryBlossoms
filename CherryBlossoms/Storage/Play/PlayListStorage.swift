@@ -15,7 +15,7 @@ class PlayListStorage {
 		let bundleFilePath = Bundle.main.path(forResource: "\(bundleFileName)/datas", ofType: "json")
 
 		guard bundleFilePath != nil else {
-			print("The path could not be created.")
+			DDLogDebug("The path could not be created.")
 			return []
 		}
 		
@@ -31,7 +31,7 @@ class PlayListStorage {
 			}
 			return tracks
 		} catch {
-			print("error")
+			DDLogDebug("error")
 		}
 
 		return []

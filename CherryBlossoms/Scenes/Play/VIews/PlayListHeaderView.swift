@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayListHeaderView: BaseView {
+class PlayListHeaderView: BaseLayoutView {
 	
 	var playItem: PlayListItem? {
 		didSet {
@@ -83,13 +83,20 @@ class PlayListHeaderView: BaseView {
 		return view
 	}()
 	
+	deinit {
+		DDLogDebug("deinit")
+	}
+	
 	override func initialization() {
 		super.initialization()
 	}
+
+}
+
+// MARK: - Setup Layout
+extension PlayListHeaderView {
 	
-	override func setupLayout() {
-		super.setupLayout()
-		
+	func setupView() {
 		self.backgroundColor = UIColor.white
 		
 		self.addSubview(shadowView)
@@ -99,7 +106,9 @@ class PlayListHeaderView: BaseView {
 		self.addSubview(artistNameLabel)
 		self.addSubview(descLabel)
 		self.addSubview(bottomLineView)
-		
+	}
+	
+	func setupLayout() {
 		coverImgView.snp.makeConstraints { (make) in
 			make.top.equalTo(self).offset(30.0)
 			make.centerX.equalTo(self).offset(-22.0)
@@ -145,5 +154,5 @@ class PlayListHeaderView: BaseView {
 			make.height.equalTo(1.0)
 		}
 	}
-
+	
 }

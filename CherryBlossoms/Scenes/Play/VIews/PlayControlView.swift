@@ -18,7 +18,9 @@ enum PlayControlActionType: String {
 	case Repeat = "Repeat"
 }
 
-class PlayControlView: BaseView {
+typealias PlayControlButtonHandler = (_ actionType: PlayControlActionType, _ value: Float) -> Void
+
+class PlayControlView: BaseLayoutView {
 	
 	var isPlaying: Bool = false {
 		didSet {
@@ -53,6 +55,8 @@ class PlayControlView: BaseView {
 	private let disableColor = UIColor.init(hexString: "#888888")
 	private let enableColor = UIColor.init(hexString: "#0070c9")
 	
+	private var playControlButtonHandler: PlayControlButtonHandler?
+	
 	private lazy var playButton: UIButton = {
 		[unowned self] in
 		var button = UIButton()
@@ -86,6 +90,7 @@ class PlayControlView: BaseView {
 			if let isShuffle = self?.isShuffle {
 				self?.isShuffle = !isShuffle
 			}
+
 			self?.actionControlButtonHandler(PlayControlActionType.Shuffle, value: self?.timeSlider.value ?? 0)
 		})
 		return button
@@ -163,18 +168,29 @@ class PlayControlView: BaseView {
 	}()
 	
 	deinit {
+		DDLogDebug("deinit")
 		self.unregisterTimer()
 	}
-
+	
 	override func initialization() {
 		super.initialization()
 		
 		self.registerTimer()
+		
+		self.isPlaying = false
+		
+		self.updateSlider()
+		self.updateTimeLabels()
+		self.updateNextButton()
+		self.updatePrevButton()
 	}
 	
-	override func setupLayout() {
-		super.setupLayout()
-		
+}
+
+// MARK: - Setup Layout
+extension PlayControlView {
+	
+	func setupView() {
 		self.backgroundColor = UIColor.init(hexString: "#FFFFFF")
 		
 		self.addSubview(startTimeLabel)
@@ -188,6 +204,10 @@ class PlayControlView: BaseView {
 		self.addSubview(nextButton)
 		self.addSubview(shuffleButton)
 		self.addSubview(repeatButton)
+	}
+	
+	func setupLayout() {
+		let offset = self.frame.size.width / 4 - 20.0
 		
 		startTimeLabel.snp.makeConstraints { (make) in
 			make.top.equalTo(self).offset(18.0)
@@ -206,8 +226,6 @@ class PlayControlView: BaseView {
 			make.left.equalTo(self.startTimeLabel.snp.right).offset(5.0)
 			make.right.equalTo(self.endTimeLabel.snp.left).offset(-5.0)
 		}
-		
-		let offset = self.frame.size.width / 4 - 20.0
 		
 		playButton.snp.makeConstraints { (make) in
 			make.centerX.equalTo(self)
@@ -238,64 +256,13 @@ class PlayControlView: BaseView {
 			make.centerY.equalTo(self.playButton)
 			make.right.equalTo(self).offset(-20.0)
 		}
-		
-		self.isPlaying = false
-		
-		self.updateSlider()
-		self.updateTimeLabels()
-		self.updateNextButton()
-		self.updatePrevButton()
 	}
 	
-	// MARK: - Handler
-	typealias PlayControlButtonHandler = (_ actionType: PlayControlActionType, _ value: Float) -> Void
-	private var playControlButtonHandler: PlayControlButtonHandler?
+}
+
+// MARK: - Update
+extension PlayControlView {
 	
-	func actionButtonClicked(handler: (PlayControlButtonHandler)? = nil) {
-		playControlButtonHandler = handler
-	}
-	
-	// MARK: -
-	func sendAction(_ actionType: PlayControlActionType) {
-		switch actionType {
-		case .Play:
-			self.playButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Pause:
-			self.playButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Prev:
-			self.prevButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Next:
-			self.nextButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .SeekDone:
-			break;
-		case .Shuffle:
-			self.shuffleButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Repeat:
-			self.repeatButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		}
-	}
-	
-	private func actionControlButtonHandler(_ actionType: PlayControlActionType, value: Float) {
-		self.timeSlider.value = value
-		
-		self.unregisterTimer()
-		
-		if (actionType != .Pause) {
-			self.registerTimer()
-		}
-		
-		if let h = self.playControlButtonHandler {
-			h(actionType, value)
-		}
-	}
-	
-	// MARK: - Update
 	func updateView() {
 		self.timeSlider.value = 0
 		
@@ -350,6 +317,55 @@ class PlayControlView: BaseView {
 }
 
 extension PlayControlView {
+	// MARK: - Handler
+	
+	func actionButtonClicked(handler: (PlayControlButtonHandler)? = nil) {
+		playControlButtonHandler = handler
+	}
+	
+	// MARK: -
+	func sendAction(_ actionType: PlayControlActionType) {
+		switch actionType {
+		case .Play:
+			self.playButton.sendActions(for: UIControl.Event.touchUpInside)
+			break;
+		case .Pause:
+			self.playButton.sendActions(for: UIControl.Event.touchUpInside)
+			break;
+		case .Prev:
+			self.prevButton.sendActions(for: UIControl.Event.touchUpInside)
+			break;
+		case .Next:
+			self.nextButton.sendActions(for: UIControl.Event.touchUpInside)
+			break;
+		case .SeekDone:
+			break;
+		case .Shuffle:
+			self.shuffleButton.sendActions(for: UIControl.Event.touchUpInside)
+			break;
+		case .Repeat:
+			self.repeatButton.sendActions(for: UIControl.Event.touchUpInside)
+			break;
+		}
+	}
+	
+	private func actionControlButtonHandler(_ actionType: PlayControlActionType, value: Float) {
+		self.timeSlider.value = value
+		
+		self.unregisterTimer()
+		
+		if (actionType != .Pause) {
+			self.registerTimer()
+		}
+		
+		if let h = self.playControlButtonHandler {
+			h(actionType, value)
+		}
+	}
+}
+
+// MARK: - Timer
+extension PlayControlView {
 	
 	func registerTimer() {
 		self.timer = Timer.every(1.0.seconds) { [weak self] in
@@ -369,3 +385,4 @@ extension PlayControlView {
 	}
 	
 }
+

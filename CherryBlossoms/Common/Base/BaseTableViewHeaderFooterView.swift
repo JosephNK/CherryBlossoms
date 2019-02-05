@@ -8,28 +8,29 @@
 
 import UIKit
 
+typealias BaseLayoutTableViewHeaderFooterView = BaseTableViewHeaderFooterView & BaseLayout
+
 class BaseTableViewHeaderFooterView: UITableViewHeaderFooterView {
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        
-        initialization()
-		setupLayout()
+		
+		setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        initialization()
-		setupLayout()
-    }
-    
-    func initialization() {
-        
+		
+		setup()
     }
 	
-	func setupLayout() {
+	func setup() {
+		guard let layoutView = self as? BaseLayoutTableViewHeaderFooterView else {
+			return
+		}
 		
+		layoutView.setupView()
+		layoutView.setupLayout()
 	}
 
 }

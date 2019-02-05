@@ -8,56 +8,71 @@
 
 import UIKit
 
-class PlayListViewController: BaseViewController {
-
-	fileprivate var dataSource: PlayListDataSource!
-	
-	fileprivate var tableView: UITableView!
-	fileprivate var controlView: PlayControlView!
-	fileprivate var headerView: PlayListHeaderView!
+class PlayListViewController: BaseLayoutViewController {
 	
 	fileprivate var player = MusicPlayer()
-	fileprivate var notificationCenter: NotificationCenter = NotificationCenter.default
 	
 	fileprivate var playlist: [PlayListItem] = PlayListStorage.fetch()
 	
+	fileprivate var notificationCenter: NotificationCenter = NotificationCenter.default
+	
+	fileprivate	let controlHeight: CGFloat = 110.0
+	
+	fileprivate lazy var playTableView: PlayListTableView = {
+		[unowned self] in
+		var view = PlayListTableView(frame: self.view.frame)
+		view.player = self.player
+		view.playlist = self.playlist
+		return view
+	}()
+	
+	fileprivate lazy var controlView: PlayControlView = {
+		[unowned self] in
+		let view = PlayControlView.init(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width, height: self.controlHeight))
+		view.player = self.player
+		return view
+	}()
+	
 	deinit {
+		DDLogDebug("deinit")
 		self.unregisterNotificationCenter()
 	}
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		let controlHeight: CGFloat = 110.0
-		
-		self.view.backgroundColor = UIColor.white
-		
 		self.registerNotificationCenter()
 		
+		// Set Player PlayItems
 		player.playItems(self.playlist)
 		
-		dataSource = PlayListDataSource()
-		dataSource.player = self.player
-		dataSource.playlist = self.playlist
+		// Set Control Action
+		controlViewAction()
+		
+		// Set First Play Item
+		if let firstPlayItem = self.playlist[safe:0] {
+			self.playTableView.updateHeaderPlayItem(firstPlayItem)
+			self.player.playItem(firstPlayItem, playStart: false)
+		}
+    }
 
-		tableView = UITableView.init(frame: self.view.frame, style: UITableView.Style.grouped)
-		tableView.dataSource = dataSource.register(for: tableView)
-		tableView.delegate = self
-		tableView.separatorColor = UIColor.white
-		tableView.backgroundColor = UIColor.white
-		tableView.bounces = false
-		tableView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: controlHeight, right: 0.0)
+}
+
+// MARK: - Setup Layout
+extension PlayListViewController {
+	
+	func setupView() {
+		self.view.backgroundColor = UIColor.white
 		
-		self.headerView = PlayListHeaderView(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width, height: 300.0))
-		tableView.tableHeaderView = self.headerView
-		
-		controlView = PlayControlView.init(frame: CGRect(x: 0.0, y: 0.0, width: self.view.frame.size.width, height: controlHeight))
-		controlView.player = self.player
-		
-		self.view.addSubview(tableView)
+		self.view.addSubview(playTableView)
 		self.view.addSubview(controlView)
+	}
+	
+	func setupLayout() {
+		// Update ListView Content Inset
+		playTableView.updateContentInset(UIEdgeInsets(top: 0.0, left: 0.0, bottom: controlHeight, right: 0.0))
 		
-		tableView.snp.makeConstraints { (make) in
+		playTableView.snp.makeConstraints { (make) in
 			make.left.right.equalTo(self.view)
 			if #available(iOS 11.0, *) {
 				make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(0)
@@ -77,53 +92,8 @@ class PlayListViewController: BaseViewController {
 				make.bottom.equalTo(self.bottomLayoutGuide.snp.bottom).inset(0)
 			}
 		}
-		
-		//
-		controlViewAction()
-		
-		//
-		if let firstPlayItem = self.playlist[safe:0] {
-			self.headerView.playItem = firstPlayItem
-			self.player.playItem(firstPlayItem, playStart: false)
-		}
-    }
-
-}
-
-// MARK: - UITableViewDelegate
-extension PlayListViewController: UITableViewDelegate {
-	
-	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 55.0
 	}
 	
-	func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-		return UITableView.automaticDimension
-	}
-	
-	func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-		return CGFloat.leastNormalMagnitude
-	}
-
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return CGFloat.leastNormalMagnitude
-	}
-
-	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return CGFloat.leastNormalMagnitude
-	}
-
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		return nil
-	}
-
-	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		return nil
-	}
-	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		self.player.playItem(self.playlist[indexPath.row], playStart: true)
-	}
 }
 
 // MARK: - Notifications
@@ -143,19 +113,20 @@ extension PlayListViewController {
 			return
 		}
 		
-		self.headerView.playItem = self.player.currentPlayItem as? PlayListItem
+		self.playTableView.updateHeaderPlayItem(self.player.currentPlayItem as? PlayListItem)
 		
 		self.controlView.updateView()
 		
-		self.tableView.reloadData()
+		self.playTableView.updateReloadData()
 	}
 	
 	@objc func onPlaybackStateChanged() {
-		self.tableView.reloadData()
+		self.playTableView.updateReloadData()
 	}
 	
 }
 
+// MARK: - Control Action
 extension PlayListViewController {
 	
 	func controlViewAction() {

@@ -8,21 +8,23 @@
 
 import UIKit
 
+typealias BaseLayoutViewController = BaseViewController & BaseLayout
+
 class BaseViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		setup()
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	
+	func setup() {
+		guard let layoutView = self as? BaseLayoutViewController else {
+			return
+		}
+		
+		layoutView.setupView()
+		layoutView.setupLayout()
+	}
 
 }

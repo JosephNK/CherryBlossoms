@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class PlayListTableViewCell: BaseTableViewCell {
+class PlayListTableViewCell: BaseLayoutTableViewCell {
 	
 	var indexPath: IndexPath = IndexPath(row: 0, section: 0) {
 		didSet {
@@ -65,20 +65,35 @@ class PlayListTableViewCell: BaseTableViewCell {
 		return view
 	}()
 	
+	deinit {
+		DDLogDebug("deinit")
+	}
+	
 	override func initialization() {
 		super.initialization()
 	}
 	
-	override func setupLayout() {
-		super.setupLayout()
+	override func setSelected(_ selected: Bool, animated: Bool) {
+		super.setSelected(selected, animated: animated)
 		
+		self.updateAccessory()
+	}
+	
+}
+
+// MARK: - Setup Layout
+extension PlayListTableViewCell {
+	
+	func setupView() {
 		self.contentView.backgroundColor = UIColor.init(hexString: "#F7F7F7")
 		
 		self.contentView.addSubview(numberLabel)
 		self.contentView.addSubview(titleLabel)
 		self.contentView.addSubview(timeLabel)
 		self.contentView.addSubview(bottomLineView)
-		
+	}
+	
+	func setupLayout() {
 		numberLabel.snp.makeConstraints { (make) in
 			make.centerY.equalTo(self.contentView)
 			make.left.equalTo(self.contentView).offset(20.0)
@@ -105,12 +120,11 @@ class PlayListTableViewCell: BaseTableViewCell {
 		}
 	}
 	
-	override func setSelected(_ selected: Bool, animated: Bool) {
-		super.setSelected(selected, animated: animated)
-		
-		self.updateAccessory()
-	}
+}
 
+// MARK: - Update
+extension PlayListTableViewCell {
+	
 	func updateAccessory() {
 		guard let player = self.player else { return }
 		
@@ -123,4 +137,5 @@ class PlayListTableViewCell: BaseTableViewCell {
 			self.titleLabel.font = UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular)
 		}
 	}
+	
 }
