@@ -12,8 +12,6 @@ typealias BaseLayoutView = BaseView & BaseLayout
 
 class BaseView: UIView {
 	
-	weak var baseLayout: BaseLayout?
-	
 	var parameter: Any?
 	
 	override init(frame: CGRect) {

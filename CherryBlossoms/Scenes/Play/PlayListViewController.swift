@@ -64,14 +64,14 @@ extension PlayListViewController {
 	func setupView() {
 		self.view.backgroundColor = UIColor.white
 		
+		// Update PlayListTableView Content Inset
+		playTableView.updateContentInset(UIEdgeInsets(top: 0.0, left: 0.0, bottom: controlHeight, right: 0.0))
+		
 		self.view.addSubview(playTableView)
 		self.view.addSubview(controlView)
 	}
 	
 	func setupLayout() {
-		// Update ListView Content Inset
-		playTableView.updateContentInset(UIEdgeInsets(top: 0.0, left: 0.0, bottom: controlHeight, right: 0.0))
-		
 		playTableView.snp.makeConstraints { (make) in
 			make.left.right.equalTo(self.view)
 			if #available(iOS 11.0, *) {
@@ -129,7 +129,7 @@ extension PlayListViewController {
 extension PlayListViewController {
 	
 	func bindControlCommandAction() {
-		controlView.bindActionButtonClicked { [weak self] (actionType, value) in
+		controlView.bindButtonActionCommand { [weak self] (actionType, value) in
 			guard let player = self?.player, let controlView = self?.controlView else { return }
 			
 			switch actionType {

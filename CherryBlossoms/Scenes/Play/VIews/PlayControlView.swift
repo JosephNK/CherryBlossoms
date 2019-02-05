@@ -20,7 +20,7 @@ enum PlayControlActionType: String {
 	case Repeat = "Repeat"
 }
 
-typealias PlayControlButtonHandler = (_ actionType: PlayControlActionType, _ value: Float) -> Void
+typealias PlayControlButtonActionCommandHandler = (_ actionType: PlayControlActionType, _ value: Float) -> Void
 
 class PlayControlView: BaseLayoutView {
 	
@@ -28,15 +28,7 @@ class PlayControlView: BaseLayoutView {
 	
 	var isPlaying: Bool = false {
 		didSet {
-			if (isPlaying) {
-				playButton.isHidden = true
-				pauseButton.isHidden = false
-			} else {
-				playButton.isHidden = false
-				pauseButton.isHidden = true
-			}
-			playButton.isEnabled = true
-			pauseButton.isEnabled = true
+			updateVisiblePlay(!isPlaying)
 		}
 	}
 	
@@ -59,7 +51,7 @@ class PlayControlView: BaseLayoutView {
 	private let disableColor = UIColor(hexString: "#888888")
 	private let enableColor = UIColor(hexString: "#0070c9")
 	
-	private var playControlButtonHandler: PlayControlButtonHandler?
+	private var buttonActionCommandHandler: PlayControlButtonActionCommandHandler?
 	
 	private lazy var playButton: UIButton = {
 		var button = UIButton()
@@ -228,35 +220,35 @@ extension PlayControlView {
 		playButton.rx.tap
 			.bind(onNext: { [unowned self] _ in
 				self.isPlaying = true
-				self.actionControlButtonHandler(PlayControlActionType.Play, value: self.timeSlider.value)
+				self.executeButtonActionCommandHandler(.Play, value: self.timeSlider.value)
 			}).disposed(by: disposeBag)
 		
 		pauseButton.rx.tap
 			.bind(onNext: { [unowned self] _ in
 				self.isPlaying = false
-				self.actionControlButtonHandler(PlayControlActionType.Pause, value: self.timeSlider.value)
+				self.executeButtonActionCommandHandler(.Pause, value: self.timeSlider.value)
 			}).disposed(by: disposeBag)
 		
 		shuffleButton.rx.tap
 			.bind(onNext: { [unowned self] _ in
 				self.isShuffle = !self.isShuffle
-				self.actionControlButtonHandler(PlayControlActionType.Shuffle, value: self.timeSlider.value)
+				self.executeButtonActionCommandHandler(.Shuffle, value: self.timeSlider.value)
 			}).disposed(by: disposeBag)
 		
 		repeatButton.rx.tap
 			.bind(onNext: { [unowned self] _ in
 				self.isRepeat = !self.isRepeat
-				self.actionControlButtonHandler(PlayControlActionType.Repeat, value: self.timeSlider.value)
+				self.executeButtonActionCommandHandler(.Repeat, value: self.timeSlider.value)
 			}).disposed(by: disposeBag)
 		
 		nextButton.rx.tap
 			.bind(onNext: { [unowned self] _ in
-				self.actionControlButtonHandler(PlayControlActionType.Next, value: 0)
+				self.executeButtonActionCommandHandler(.Next, value: 0)
 			}).disposed(by: disposeBag)
 		
 		prevButton.rx.tap
 			.bind(onNext: { [unowned self] _ in
-				self.actionControlButtonHandler(PlayControlActionType.Prev, value: 0)
+				self.executeButtonActionCommandHandler(.Prev, value: 0)
 			}).disposed(by: disposeBag)
 		
 		timeSlider.rx.controlEvent(UIControlEvents.valueChanged)
@@ -271,7 +263,7 @@ extension PlayControlView {
 		
 		timeSlider.rx.controlEvent(UIControlEvents.touchUpInside)
 			.bind(onNext: { [unowned self] _ in
-				self.actionControlButtonHandler(PlayControlActionType.SeekDone, value: self.timeSlider.value)
+				self.executeButtonActionCommandHandler(.SeekDone, value: self.timeSlider.value)
 			}).disposed(by: disposeBag)
 	}
 	
@@ -285,12 +277,21 @@ extension PlayControlView {
 		
 		self.unregisterTimer()
 		
+		self.updateVisiblePlay(true)
 		self.updateSlider()
 		self.updateTimeLabels()
 		self.updateNextButton()
 		self.updatePrevButton()
 		
 		self.registerTimer()
+	}
+	
+	func updateVisiblePlay(_ visible: Bool) {
+		playButton.isHidden = !visible
+		pauseButton.isHidden = visible
+		
+		playButton.isEnabled = true
+		pauseButton.isEnabled = true
 	}
 	
 	func updateSlider() {
@@ -334,40 +335,14 @@ extension PlayControlView {
 	
 }
 
+// MARK: - Button Action Handler
 extension PlayControlView {
-	// MARK: - Handler
 	
-	func bindActionButtonClicked(handler: (PlayControlButtonHandler)? = nil) {
-		playControlButtonHandler = handler
+	func bindButtonActionCommand(handler: (PlayControlButtonActionCommandHandler)? = nil) {
+		buttonActionCommandHandler = handler
 	}
 	
-	// MARK: -
-	func sendAction(_ actionType: PlayControlActionType) {
-		switch actionType {
-		case .Play:
-			self.playButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Pause:
-			self.playButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Prev:
-			self.prevButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Next:
-			self.nextButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .SeekDone:
-			break;
-		case .Shuffle:
-			self.shuffleButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		case .Repeat:
-			self.repeatButton.sendActions(for: UIControl.Event.touchUpInside)
-			break;
-		}
-	}
-	
-	private func actionControlButtonHandler(_ actionType: PlayControlActionType, value: Float) {
+	private func executeButtonActionCommandHandler(_ actionType: PlayControlActionType, value: Float) {
 		self.timeSlider.value = value
 		
 		self.unregisterTimer()
@@ -376,10 +351,11 @@ extension PlayControlView {
 			self.registerTimer()
 		}
 		
-		if let h = self.playControlButtonHandler {
+		if let h = self.buttonActionCommandHandler {
 			h(actionType, value)
 		}
 	}
+	
 }
 
 // MARK: - Timer
