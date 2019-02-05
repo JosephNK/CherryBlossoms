@@ -1,5 +1,5 @@
 //
-//  MusicPlayer.swift
+//  SwiftySwiftyMusicPlayer.swift
 //  CherryBlossoms
 //
 //  Created by JosephNK on 01/02/2019.
@@ -29,12 +29,12 @@ public class MusicPlayItem: NSObject {
 	
 }
 
-public struct MusicPlayerNotification {
+public struct SwiftyMusicPlayerNotification {
 	static let OnTrackChangedNotification = "OnTrackChangedNotification"
 	static let OnPlaybackStateChangedNotification = "OnPlaybackStateChangedNotification"
 }
 
-class MusicPlayer: NSObject {
+class SwiftyMusicPlayer: NSObject {
 	
 	var audioPlayer: AVAudioPlayer?
 	
@@ -148,7 +148,7 @@ class MusicPlayer: NSObject {
 }
 
 // MARK: - Audio Session
-extension MusicPlayer {
+extension SwiftyMusicPlayer {
 	
 	func prepareSession() {
 		if #available(iOS 10.0, *) {
@@ -172,7 +172,7 @@ extension MusicPlayer {
 }
 
 // MARK: - Play Commands
-extension MusicPlayer {
+extension SwiftyMusicPlayer {
 	
 	func playItems(_ playItems: [MusicPlayItem], firstItem: MusicPlayItem? = nil) {
 		self.playItems = playItems.enumerated().map { (index, element) -> MusicPlayItem in
@@ -273,7 +273,7 @@ extension MusicPlayer {
 }
 
 // MARK: - Shuffle
-extension MusicPlayer {
+extension SwiftyMusicPlayer {
 	
 	func configureShffles(isOn: Bool) {
 		if isOn {
@@ -288,7 +288,7 @@ extension MusicPlayer {
 }
 
 // MARK: - AVAudioPlayerDelegate
-extension MusicPlayer: AVAudioPlayerDelegate {
+extension SwiftyMusicPlayer: AVAudioPlayerDelegate {
 	
 	func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
 		if self.nextPlayItem == nil {
@@ -310,7 +310,7 @@ extension MusicPlayer: AVAudioPlayerDelegate {
 }
 
 // MARK: - Command Center
-extension MusicPlayer {
+extension SwiftyMusicPlayer {
 	
 	func prepareCommandCenter() {
 		self.commandCenter.playCommand.addTarget (handler: { [weak self] event -> MPRemoteCommandHandlerStatus in
@@ -337,7 +337,7 @@ extension MusicPlayer {
 			return .success
 		})
 		
-		self.commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(MusicPlayer.handleChangePlaybackPositionCommandEvent(event:)))
+		self.commandCenter.changePlaybackPositionCommand.addTarget(self, action: #selector(SwiftyMusicPlayer.handleChangePlaybackPositionCommandEvent(event:)))
 	}
 	
 	@objc func handleChangePlaybackPositionCommandEvent(event: MPChangePlaybackPositionCommandEvent) -> MPRemoteCommandHandlerStatus {
@@ -356,20 +356,20 @@ extension MusicPlayer {
 }
 
 // MARK: - Notification Center
-extension MusicPlayer {
+extension SwiftyMusicPlayer {
 	
 	func notifyOnPlaybackStateChanged() {
-		self.notificationCenter.post(name: Notification.Name(rawValue: MusicPlayerNotification.OnPlaybackStateChangedNotification), object: self)
+		self.notificationCenter.post(name: Notification.Name(rawValue: SwiftyMusicPlayerNotification.OnPlaybackStateChangedNotification), object: self)
 	}
 	
 	func notifyOnTrackChanged() {
-		self.notificationCenter.post(name: Notification.Name(rawValue: MusicPlayerNotification.OnTrackChangedNotification), object: self)
+		self.notificationCenter.post(name: Notification.Name(rawValue: SwiftyMusicPlayerNotification.OnTrackChangedNotification), object: self)
 	}
 	
 }
 
 // MARK: - Now Playing Info
-extension MusicPlayer {
+extension SwiftyMusicPlayer {
 
 	func configureNowPlayingInfo(_ nowPlayingInfo: [String: AnyObject]?) {
 		self.nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo

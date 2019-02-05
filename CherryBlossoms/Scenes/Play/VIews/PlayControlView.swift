@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 enum PlayControlActionType: String {
 	case Play = "Play"
@@ -21,6 +23,8 @@ enum PlayControlActionType: String {
 typealias PlayControlButtonHandler = (_ actionType: PlayControlActionType, _ value: Float) -> Void
 
 class PlayControlView: BaseLayoutView {
+	
+	let disposeBag = DisposeBag()
 	
 	var isPlaying: Bool = false {
 		didSet {
@@ -48,36 +52,24 @@ class PlayControlView: BaseLayoutView {
 		}
 	}
 	
-	weak var player: MusicPlayer?
+	weak var player: SwiftyMusicPlayer?
 	
 	private var timer: Timer?
 	
-	private let disableColor = UIColor.init(hexString: "#888888")
-	private let enableColor = UIColor.init(hexString: "#0070c9")
+	private let disableColor = UIColor(hexString: "#888888")
+	private let enableColor = UIColor(hexString: "#0070c9")
 	
 	private var playControlButtonHandler: PlayControlButtonHandler?
 	
 	private lazy var playButton: UIButton = {
-		[unowned self] in
 		var button = UIButton()
 		button.setImage(UIImage(named: "btnPlay"), for: UIControl.State.normal)
-		button.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			self?.isPlaying = true
-			
-			self?.actionControlButtonHandler(PlayControlActionType.Play, value: self?.timeSlider.value ?? 0)
-		})
 		return button
 	}()
 	
 	private lazy var pauseButton: UIButton = {
-		[unowned self] in
 		var button = UIButton()
 		button.setImage(UIImage(named: "btnPause"), for: UIControl.State.normal)
-		button.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			self?.isPlaying = false
-			
-			self?.actionControlButtonHandler(PlayControlActionType.Pause, value: self?.timeSlider.value ?? 0)
-		})
 		return button
 	}()
 	
@@ -86,13 +78,6 @@ class PlayControlView: BaseLayoutView {
 		var button = UIButton()
 		button.setImage(UIImage(named: "btnShuffle")?.withRenderingMode(.alwaysTemplate), for: UIControl.State.normal)
 		button.tintColor = self.disableColor
-		button.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			if let isShuffle = self?.isShuffle {
-				self?.isShuffle = !isShuffle
-			}
-
-			self?.actionControlButtonHandler(PlayControlActionType.Shuffle, value: self?.timeSlider.value ?? 0)
-		})
 		return button
 	}()
 	
@@ -101,38 +86,24 @@ class PlayControlView: BaseLayoutView {
 		var button = UIButton()
 		button.setImage(UIImage(named: "btnRepeat")?.withRenderingMode(.alwaysTemplate), for: UIControl.State.normal)
 		button.tintColor = self.disableColor
-		button.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			if let isRepeat = self?.isRepeat {
-				self?.isRepeat = !isRepeat
-			}
-			self?.actionControlButtonHandler(PlayControlActionType.Repeat, value: self?.timeSlider.value ?? 0)
-		})
 		return button
 	}()
 	
 	private lazy var nextButton: UIButton = {
-		[unowned self] in
 		var button = UIButton()
 		button.setImage(UIImage(named: "btnFastforward"), for: UIControl.State.normal)
-		button.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			self?.actionControlButtonHandler(PlayControlActionType.Next, value: 0)
-		})
 		return button
 	}()
 	
 	private lazy var prevButton: UIButton = {
-		[unowned self] in
 		var button = UIButton()
 		button.setImage(UIImage(named: "btnRewind"), for: UIControl.State.normal)
-		button.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			self?.actionControlButtonHandler(PlayControlActionType.Prev, value: 0)
-		})
 		return button
 	}()
 	
 	private lazy var startTimeLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#262628")
+		label.textColor = UIColor(hexString: "#262628")
 		label.font = UIFont.systemFont(ofSize: 12.0)
 		label.text = "00:00"
 		label.textAlignment = NSTextAlignment.right
@@ -141,7 +112,7 @@ class PlayControlView: BaseLayoutView {
 	
 	private lazy var endTimeLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#262628", alpha: 0.5)
+		label.textColor = UIColor(hexString: "#262628")?.withAlphaComponent(0.5)
 		label.font = UIFont.systemFont(ofSize: 12.0)
 		label.text = "00:00"
 		label.textAlignment = NSTextAlignment.left
@@ -149,21 +120,9 @@ class PlayControlView: BaseLayoutView {
 	}()
 	
 	private lazy var timeSlider: UISlider = {
-		[unowned self] in
 		let slider = UISlider()
-		slider.minimumTrackTintColor = UIColor.init(hexString: "#262628")
-		slider.thumbTintColor = UIColor.init(hexString: "#262628")
-		slider.addAction(for: UIControl.Event.valueChanged, { [weak self] in
-			let currentTime = Double(slider.value)
-			if let duration = self?.player?.duration {
-				self?.startTimeLabel.text = String.conventHumanReadableTimeInterval(currentTime)
-				self?.endTimeLabel.text = "-" + String.conventHumanReadableTimeInterval(duration - currentTime)
-			}
-			self?.unregisterTimer()
-		})
-		slider.addAction(for: UIControl.Event.touchUpInside, { [weak self] in
-			self?.actionControlButtonHandler(PlayControlActionType.SeekDone, value: slider.value)
-		})
+		slider.minimumTrackTintColor = UIColor(hexString: "#262628")
+		slider.thumbTintColor = UIColor(hexString: "#262628")
 		return slider
 	}()
 	
@@ -176,6 +135,8 @@ class PlayControlView: BaseLayoutView {
 		super.initialization()
 		
 		self.registerTimer()
+		
+		self.bindRxEvent()
 		
 		self.isPlaying = false
 		
@@ -191,7 +152,7 @@ class PlayControlView: BaseLayoutView {
 extension PlayControlView {
 	
 	func setupView() {
-		self.backgroundColor = UIColor.init(hexString: "#FFFFFF")
+		self.backgroundColor = UIColor(hexString: "#FFFFFF")
 		
 		self.addSubview(startTimeLabel)
 		self.addSubview(endTimeLabel)
@@ -260,6 +221,62 @@ extension PlayControlView {
 	
 }
 
+// MARK: - Rx Binding
+extension PlayControlView {
+	
+	func bindRxEvent() {
+		playButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.isPlaying = true
+				self.actionControlButtonHandler(PlayControlActionType.Play, value: self.timeSlider.value)
+			}).disposed(by: disposeBag)
+		
+		pauseButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.isPlaying = false
+				self.actionControlButtonHandler(PlayControlActionType.Pause, value: self.timeSlider.value)
+			}).disposed(by: disposeBag)
+		
+		shuffleButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.isShuffle = !self.isShuffle
+				self.actionControlButtonHandler(PlayControlActionType.Shuffle, value: self.timeSlider.value)
+			}).disposed(by: disposeBag)
+		
+		repeatButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.isRepeat = !self.isRepeat
+				self.actionControlButtonHandler(PlayControlActionType.Repeat, value: self.timeSlider.value)
+			}).disposed(by: disposeBag)
+		
+		nextButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.actionControlButtonHandler(PlayControlActionType.Next, value: 0)
+			}).disposed(by: disposeBag)
+		
+		prevButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.actionControlButtonHandler(PlayControlActionType.Prev, value: 0)
+			}).disposed(by: disposeBag)
+		
+		timeSlider.rx.controlEvent(UIControlEvents.valueChanged)
+			.subscribe(onNext: { [unowned self] value in
+				let currentTime = Double(self.timeSlider.value)
+				if let duration = self.player?.duration {
+					self.startTimeLabel.text = String.conventHumanReadableTimeInterval(currentTime)
+					self.endTimeLabel.text = "-" + String.conventHumanReadableTimeInterval(duration - currentTime)
+				}
+				self.unregisterTimer()
+		}).disposed(by: disposeBag)
+		
+		timeSlider.rx.controlEvent(UIControlEvents.touchUpInside)
+			.bind(onNext: { [unowned self] _ in
+				self.actionControlButtonHandler(PlayControlActionType.SeekDone, value: self.timeSlider.value)
+			}).disposed(by: disposeBag)
+	}
+	
+}
+
 // MARK: - Update
 extension PlayControlView {
 	
@@ -314,12 +331,13 @@ extension PlayControlView {
 		//self.prevButton.isEnabled = player.previousPlayItem != nil
 		self.prevButton.isEnabled = true
 	}
+	
 }
 
 extension PlayControlView {
 	// MARK: - Handler
 	
-	func actionButtonClicked(handler: (PlayControlButtonHandler)? = nil) {
+	func bindActionButtonClicked(handler: (PlayControlButtonHandler)? = nil) {
 		playControlButtonHandler = handler
 	}
 	

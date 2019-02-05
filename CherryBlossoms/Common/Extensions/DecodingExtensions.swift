@@ -1,36 +1,12 @@
 //
-//  SafeHelper.swift
-//  CherryBlossoms
+//  DecodingExtensions.swift
+//  JosephNK
 //
-//  Created by JosephNK on 2018. 10. 24..
-//  Copyright © 2018년 JosephNK. All rights reserved.
+//  Created by JosephNK on 04/02/2019.
+//  Copyright © 2019 JosephNK. All rights reserved.
 //
 
 import UIKit
-
-extension Collection {
-    
-    /**
-     배열에서 값 가져올 때 안전하게 가져오는 함수
-     - parameters:
-     - index: index
-     */
-    subscript(safe index: Index) -> Iterator.Element? {
-        guard indices.contains(index) else { return nil }
-        return self[index]
-    }
-    
-}
-
-extension NSNumber {
-    
-    /**
-     Bool인지 체크
-     - returns: Bool 값이 참인지 아닌지 여부 값
-     */
-    var isBool: Bool { return CFBooleanGetTypeID() == CFGetTypeID(self) }
-    
-}
 
 extension KeyedDecodingContainer {
     

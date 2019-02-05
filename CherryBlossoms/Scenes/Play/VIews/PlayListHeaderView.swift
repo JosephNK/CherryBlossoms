@@ -31,7 +31,7 @@ class PlayListHeaderView: BaseLayoutView {
 	
 	private lazy var coverImgView: UIImageView = {
 		let imgView = UIImageView()
-		imgView.backgroundColor = UIColor.init(hexString: "#f5a623")
+		imgView.backgroundColor = UIColor(hexString: "#f5a623")
 		return imgView
 	}()
 	
@@ -47,13 +47,13 @@ class PlayListHeaderView: BaseLayoutView {
 	
 	private lazy var circleView: UIView = {
 		let view = UIView()
-		view.backgroundColor = UIColor.init(hexString: "#d8d8d8")
+		view.backgroundColor = UIColor(hexString: "#d8d8d8")
 		return view
 	}()
 
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#000000")
+		label.textColor = UIColor(hexString: "#000000")
 		label.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.bold)
 		label.text = "Title"
 		label.textAlignment = NSTextAlignment.center
@@ -62,7 +62,7 @@ class PlayListHeaderView: BaseLayoutView {
 	
 	private lazy var artistNameLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#444444")
+		label.textColor = UIColor(hexString: "#444444")
 		label.font = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.medium)
 		label.text = "Name"
 		label.textAlignment = NSTextAlignment.center
@@ -71,7 +71,7 @@ class PlayListHeaderView: BaseLayoutView {
 	
 	private lazy var descLabel: TopAlignedLabel = {
 		let label = TopAlignedLabel()
-		label.textColor = UIColor.init(hexString: "#666666")
+		label.textColor = UIColor(hexString: "#666666")
 		label.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
 		label.numberOfLines = 0
 		return label
@@ -79,7 +79,7 @@ class PlayListHeaderView: BaseLayoutView {
 	
 	private lazy var bottomLineView: UIView = {
 		let view = UIView()
-		view.backgroundColor = UIColor.init(hexString: "#e6e6e6")
+		view.backgroundColor = UIColor(hexString: "#e6e6e6")
 		return view
 	}()
 	

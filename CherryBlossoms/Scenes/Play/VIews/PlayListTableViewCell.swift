@@ -30,11 +30,11 @@ class PlayListTableViewCell: BaseLayoutTableViewCell {
 		}
 	}
 
-	weak var player: MusicPlayer?
+	weak var player: SwiftyMusicPlayer?
 
 	private lazy var numberLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#9b9b9b")
+		label.textColor = UIColor(hexString: "#9b9b9b")
 		label.font = UIFont.systemFont(ofSize: 18.0)
 		label.text = "1"
 		label.textAlignment = NSTextAlignment.center
@@ -43,7 +43,7 @@ class PlayListTableViewCell: BaseLayoutTableViewCell {
 	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#444444")
+		label.textColor = UIColor(hexString: "#444444")
 		label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFont.Weight.regular)
 		label.text = "Title"
 		label.textAlignment = NSTextAlignment.left
@@ -52,7 +52,7 @@ class PlayListTableViewCell: BaseLayoutTableViewCell {
 	
 	private lazy var timeLabel: UILabel = {
 		let label = UILabel()
-		label.textColor = UIColor.init(hexString: "#444444")
+		label.textColor = UIColor(hexString: "#444444")
 		label.font = UIFont.systemFont(ofSize: 12.0)
 		label.text = "00:00"
 		label.textAlignment = NSTextAlignment.right
@@ -61,7 +61,7 @@ class PlayListTableViewCell: BaseLayoutTableViewCell {
 	
 	private lazy var bottomLineView: UIView = {
 		let view = UIView()
-		view.backgroundColor = UIColor.init(hexString: "#e6e6e6")
+		view.backgroundColor = UIColor(hexString: "#e6e6e6")
 		return view
 	}()
 	
@@ -85,7 +85,7 @@ class PlayListTableViewCell: BaseLayoutTableViewCell {
 extension PlayListTableViewCell {
 	
 	func setupView() {
-		self.contentView.backgroundColor = UIColor.init(hexString: "#F7F7F7")
+		self.contentView.backgroundColor = UIColor(hexString: "#F7F7F7")
 		
 		self.contentView.addSubview(numberLabel)
 		self.contentView.addSubview(titleLabel)

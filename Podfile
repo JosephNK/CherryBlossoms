@@ -10,4 +10,5 @@ target 'CherryBlossoms' do
   pod 'CocoaLumberjack/Swift', '~> 3.4.2'
   pod 'RxSwift', '~> 4.4.0'
   pod 'RxCocoa', '~> 4.4.0'
+  pod 'SwifterSwift', '~> 4.6.0'
 end

@@ -10,7 +10,7 @@ import UIKit
 
 class PlayListViewController: BaseLayoutViewController {
 	
-	fileprivate var player = MusicPlayer()
+	fileprivate var player = SwiftyMusicPlayer()
 	
 	fileprivate var playlist: [PlayListItem] = PlayListStorage.fetch()
 	
@@ -47,7 +47,7 @@ class PlayListViewController: BaseLayoutViewController {
 		player.playItems(self.playlist)
 		
 		// Set Control Action
-		controlViewAction()
+		bindControlCommandAction()
 		
 		// Set First Play Item
 		if let firstPlayItem = self.playlist[safe:0] {
@@ -100,8 +100,8 @@ extension PlayListViewController {
 extension PlayListViewController {
 	
 	func registerNotificationCenter() {
-		self.notificationCenter.addObserver(self, selector: #selector(onTrackChanged), name: NSNotification.Name(rawValue: MusicPlayerNotification.OnTrackChangedNotification), object: nil)
-		self.notificationCenter.addObserver(self, selector: #selector(onPlaybackStateChanged), name: NSNotification.Name(rawValue: MusicPlayerNotification.OnPlaybackStateChangedNotification), object: nil)
+		self.notificationCenter.addObserver(self, selector: #selector(onTrackChanged), name: NSNotification.Name(rawValue: SwiftyMusicPlayerNotification.OnTrackChangedNotification), object: nil)
+		self.notificationCenter.addObserver(self, selector: #selector(onPlaybackStateChanged), name: NSNotification.Name(rawValue: SwiftyMusicPlayerNotification.OnPlaybackStateChangedNotification), object: nil)
 	}
 	
 	func unregisterNotificationCenter() {
@@ -113,10 +113,9 @@ extension PlayListViewController {
 			return
 		}
 		
-		self.playTableView.updateHeaderPlayItem(self.player.currentPlayItem as? PlayListItem)
-		
 		self.controlView.updateView()
 		
+		self.playTableView.updateHeaderPlayItem(self.player.currentPlayItem as? PlayListItem)
 		self.playTableView.updateReloadData()
 	}
 	
@@ -129,8 +128,8 @@ extension PlayListViewController {
 // MARK: - Control Action
 extension PlayListViewController {
 	
-	func controlViewAction() {
-		controlView.actionButtonClicked { [weak self] (actionType, value) in
+	func bindControlCommandAction() {
+		controlView.bindActionButtonClicked { [weak self] (actionType, value) in
 			guard let player = self?.player, let controlView = self?.controlView else { return }
 			
 			switch actionType {

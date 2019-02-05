@@ -1,9 +1,9 @@
 //
-//  RegularHelper.swift
-//  CherryBlossoms
+//  RegularExtensions.swift
+//  JosephNK
 //
-//  Created by JosephNK on 2018. 10. 26..
-//  Copyright © 2018년 JosephNK. All rights reserved.
+//  Created by JosephNK on 04/02/2019.
+//  Copyright © 2019 JosephNK. All rights reserved.
 //
 
 import UIKit

@@ -10,7 +10,7 @@ import UIKit
 
 class PlayListTableView: BaseLayoutView {
 	
-	weak var player: MusicPlayer? {
+	weak var player: SwiftyMusicPlayer? {
 		didSet {
 			updateDataSource()
 			updateReloadData()

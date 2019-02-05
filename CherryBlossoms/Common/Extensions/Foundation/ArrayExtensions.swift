@@ -1,6 +1,6 @@
 //
-//  ArrayDeepCopy.swift
-//  CherryBlossoms
+//  ArrayExtensions.swift
+//  JosephNK
 //
 //  Created by JosephNK on 04/02/2019.
 //  Copyright © 2019 JosephNK. All rights reserved.
@@ -10,19 +10,23 @@
 
 import UIKit
 
-//Protocol that copyable class should conform
+//
+// Deep Copy
+//
+
+// Protocol that copyable class should conform
 protocol Copying {
 	init(original: Self)
 }
 
-//Concrete class extension
+// Concrete class extension
 extension Copying {
 	func copy() -> Self {
 		return Self.init(original: self)
 	}
 }
 
-//Array extension for elements conforms the Copying protocol
+// Array extension for elements conforms the Copying protocol
 extension Array where Element: Copying {
 	func clone() -> Array {
 		var copiedArray = Array<Element>()

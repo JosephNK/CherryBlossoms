@@ -16,7 +16,7 @@ class PlayListDataSource: NSObject, UITableViewDataSource {
 	
 	var playlist: [PlayListItem] = []
 	
-	weak var player: MusicPlayer?
+	weak var player: SwiftyMusicPlayer?
 	
 	
 	func register(for tableView: UITableView) -> PlayListDataSource {

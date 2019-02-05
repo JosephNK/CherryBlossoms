@@ -1,15 +1,15 @@
 //
-//  ImageHelper.swift
-//  CherryBlossoms
+//  UIImageExtensions.swift
+//  JosephNK
 //
-//  Created by JosephNK on 2018. 10. 25..
-//  Copyright © 2018년 JosephNK. All rights reserved.
+//  Created by JosephNK on 04/02/2019.
+//  Copyright © 2019 JosephNK. All rights reserved.
 //
 
 import UIKit
 
 extension UIImage {
-    
+	
     /**
      색상을 이미지로 변환
      - parameters:
