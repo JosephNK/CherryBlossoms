@@ -12,7 +12,8 @@ class PlayListViewController: BaseLayoutViewController {
 	
 	fileprivate var player = SwiftyMusicPlayer()
 	
-	fileprivate var playlist: [PlayListItem] = PlayListStorage.fetch()
+	//fileprivate var playlist: [PlayListItem] = PlayListStorage.fetch()
+	fileprivate var playlist: [PlayListItem] = []
 	
 	fileprivate var notificationCenter: NotificationCenter = NotificationCenter.default
 	

@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
+		//Thread.sleep(forTimeInterval: 3.0)
 		
 		// Standard lumberjack Initialization
 		LoggerManager.setupLogging()
@@ -28,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		//let storyboard = UIStoryboard(name: "Play", bundle: nil)
 		//let controller = storyboard.instantiateViewController(withIdentifier: "PlayListViewController")
 
-		window?.rootViewController = PlayListViewController()
+		window?.rootViewController = RootContainerViewController()
 		window?.makeKeyAndVisible()
 		
 		return true
