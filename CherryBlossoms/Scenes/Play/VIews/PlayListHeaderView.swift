@@ -18,8 +18,8 @@ class PlayListHeaderView: BaseLayoutView {
 			}
 			self.coverImgView.image = image
 			
-			let trackName = playItem?.trackName ?? ""
-			self.titleLabel.text = trackName
+			let albumName = playItem?.albumName ?? ""
+			self.titleLabel.text = albumName
 			
 			let artistName = playItem?.artistName ?? ""
 			self.artistNameLabel.text = artistName
@@ -74,6 +74,7 @@ class PlayListHeaderView: BaseLayoutView {
 		label.textColor = UIColor(hexString: "#666666")
 		label.font = UIFont.systemFont(ofSize: 14.0, weight: UIFont.Weight.regular)
 		label.numberOfLines = 0
+		label.textAlignment = NSTextAlignment.center
 		return label
 	}()
 	

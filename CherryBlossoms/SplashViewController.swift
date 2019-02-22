@@ -19,7 +19,7 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.view.backgroundColor = UIColor.white
+		self.view.backgroundColor = UIColor.black
 		
 		guard let image = UIImage(named: "splash") else {
 			return
@@ -32,12 +32,13 @@ class SplashViewController: UIViewController {
 		imageView.snp.makeConstraints { (make) in
 			make.left.right.equalTo(self.view)
 			if #available(iOS 11.0, *) {
-				make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(0)
-				make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(0)
+				//make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(0)
+				//make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(0)
 			} else {
-				make.top.equalTo(self.topLayoutGuide.snp.bottom).inset(0)
-				make.bottom.equalTo(self.bottomLayoutGuide.snp.bottom).inset(0)
+				//make.top.equalTo(self.topLayoutGuide.snp.bottom).inset(0)
+				//make.bottom.equalTo(self.bottomLayoutGuide.snp.bottom).inset(0)
 			}
+			make.top.bottom.equalTo(self.view).inset(0)
 		}
     }
     

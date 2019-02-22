@@ -3,7 +3,7 @@
 		{
 			"identifier": "1",
 			"trackName": "Mourning Day",
-			"albumName": "",
+			"albumName": "Album Name 1",
 			"artistName": "SadMe",
 			"albumImageName": "SadMe_-_Mourning_Day.jpg",
 			"fileName": "SadMe_-_Mourning_Day.mp3",
@@ -12,7 +12,7 @@
 		{
 			"identifier": "2",
 			"trackName": "Wild Heart",
-			"albumName": "",
+			"albumName": "Album Name 2",
 			"artistName": "Omonoko",
 			"albumImageName": "Omonoko_-_Wild_Heart.jpg",
 			"fileName": "Omonoko_-_Wild_Heart.mp3",
@@ -21,7 +21,7 @@
 		{
 			"identifier": "3",
 			"trackName": "All I Need Is You",
-			"albumName": "",
+			"albumName": "Album Name 3",
 			"artistName": "SemMueL",
 			"albumImageName": "SemMueL_-_All_I_Need_Is_You.jpg",
 			"fileName": "SemMueL_-_All_I_Need_Is_You.mp3",
@@ -30,7 +30,7 @@
 		{
 			"identifier": "4",
 			"trackName": "Chances",
-			"albumName": "",
+			"albumName": "Album Name 4",
 			"artistName": "The Devil Music Co.",
 			"albumImageName": "The_Devil_Music_Co._-_Chances.jpg",
 			"fileName": "The_Devil_Music_Co._-_Chances.mp3",
@@ -39,7 +39,7 @@
 		{
 			"identifier": "5",
 			"trackName": "By Your Side by Mallz & Deron Alek",
-			"albumName": "",
+			"albumName": "Album Name 5",
 			"artistName": "Cartel",
 			"albumImageName": "Cartel_-_By_Your_Side_by_Mallz__amp__Deron_Alek.jpg",
 			"fileName": "Cartel_-_By_Your_Side_by_Mallz__amp__Deron_Alek.mp3",
@@ -48,7 +48,7 @@
 		{
 			"identifier": "6",
 			"trackName": "Boomerang",
-			"albumName": "",
+			"albumName": "Album Name 6",
 			"artistName": "HoneyChrome",
 			"albumImageName": "HoneyChrome_-_Boomerang.jpg",
 			"fileName": "HoneyChrome_-_Boomerang.mp3",
@@ -57,7 +57,7 @@
 		{
 			"identifier": "7",
 			"trackName": "Ocean",
-			"albumName": "",
+			"albumName": "Album Name 7",
 			"artistName": "ISRA",
 			"albumImageName": "ISRA_-_Ocean.jpg",
 			"fileName": "ISRA_-_Ocean.mp3",
@@ -66,7 +66,7 @@
 		{
 			"identifier": "8",
 			"trackName": "Astronauts",
-			"albumName": "",
+			"albumName": "Album Name 8",
 			"artistName": "Parker",
 			"albumImageName": "Parker_-_Astronauts.jpg",
 			"fileName": "Parker_-_Astronauts.mp3",
@@ -75,7 +75,7 @@
 		{
 			"identifier": "9",
 			"trackName": "Closure",
-			"albumName": "",
+			"albumName": "Album Name 9",
 			"artistName": "Seth Power",
 			"albumImageName": "Seth_Power_-_Closure.jpg",
 			"fileName": "Seth_Power_-_Closure.mp3",
@@ -84,7 +84,7 @@
 		{
 			"identifier": "10",
 			"trackName": "Unnamed Song (Of A Fake Unicorn)",
-			"albumName": "",
+			"albumName": "Album Name 10",
 			"artistName": "The Freak Fandango Orchestra",
 			"albumImageName": "The_Freak_Fandango_Orchestra_-_Unnamed_Song__Of_A_Fake_Unicorn_.jpg",
 			"fileName": "The_Freak_Fandango_Orchestra_-_Unnamed_Song__Of_A_Fake_Unicorn_.mp3",
