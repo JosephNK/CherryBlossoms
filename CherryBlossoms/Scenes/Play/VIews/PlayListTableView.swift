@@ -127,10 +127,32 @@ extension PlayListTableView {
 	
 	func updateReloadData() {
 		self.reloadData()
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+			let indexPath = self.getPlayIndexPath()
+			self.scrollToRow(at: indexPath, at: .none, animated: true)
+		}
 	}
 	
 	func updateHeaderPlayItem(_ playItem: PlayListItem?) {
 		self.headerView.playItem = playItem
 	}
 	
+}
+
+// MARK: - Getter
+extension PlayListTableView {
+	
+	func getPlayIndexPath() -> IndexPath {
+		var indexPath: IndexPath = IndexPath(row: 0, section: 0)
+		if let currentPlayItem = self.player?.currentPlayItem {
+			for (index, item) in self.playlist.enumerated() {
+				if item == currentPlayItem {
+					indexPath = IndexPath(row: index, section: 0)
+					break;
+				}
+			}
+		}
+		return indexPath
+	}
 }
