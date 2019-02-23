@@ -27,8 +27,13 @@ class PlayListTableView: BaseLayoutTableView {
 	fileprivate var playListDataSource: PlayListDataSource!
 	
 	fileprivate lazy var headerView: PlayListHeaderView = {
-		[unowned self] in
 		var headerView = PlayListHeaderView(frame: CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: 300.0))
+		return headerView
+	}()
+	
+	fileprivate lazy var parallaxHeaderView: ParallaxHeaderView = {
+		let subView = self.headerView
+		var headerView = ParallaxHeaderView.parallaxHeaderViewWithSubView(subView)
 		return headerView
 	}()
 	
@@ -47,7 +52,7 @@ extension PlayListTableView {
 	func setupView() {
 		playListDataSource = PlayListDataSource()
 		
-		self.tableHeaderView = headerView
+		self.tableHeaderView = parallaxHeaderView
 		self.dataSource = playListDataSource.register(for: self)
 		self.delegate = self
 		self.separatorColor = UIColor.white
@@ -95,6 +100,17 @@ extension PlayListTableView: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		self.player?.playItem(self.playlist[indexPath.row], playStart: true)
 	}
+}
+
+// MARK: - ScollView Delegate
+extension PlayListTableView {
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		if let header = self.tableHeaderView as? ParallaxHeaderView {
+			header.layoutHeaderViewForScrollViewOffset(scrollView.contentOffset)
+		}
+	}
+	
 }
 
 // MARK: - Update

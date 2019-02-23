@@ -20,7 +20,7 @@ class PlayListViewController: BaseLayoutViewController {
 	
 	fileprivate lazy var playTableView: PlayListTableView = {
 		[unowned self] in
-		var view = PlayListTableView.init(frame: self.view.frame, style: UITableView.Style.grouped)
+		var view = PlayListTableView.init(frame: self.view.frame, style: UITableView.Style.plain)
 		view.player = self.player
 		view.playlist = self.playlist
 		return view
@@ -55,6 +55,14 @@ class PlayListViewController: BaseLayoutViewController {
 			self.player.playItem(firstPlayItem, playStart: false)
 		}
     }
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if let parallaxHeaderView = self.playTableView.tableHeaderView as? ParallaxHeaderView {
+			parallaxHeaderView.refreshBlurViewForNewImage()
+		}
+	}
 
 }
 

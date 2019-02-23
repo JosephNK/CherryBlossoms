@@ -13,6 +13,7 @@
 		6F01943F21F5BE6000DA9551 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F01943D21F5BE6000DA9551 /* LaunchScreen.storyboard */; };
 		6F01EA622200728D008A08B2 /* PlayListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01EA612200728D008A08B2 /* PlayListDataSource.swift */; };
 		6F01EA64220072EC008A08B2 /* PlayListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F01EA63220072EC008A08B2 /* PlayListTableViewCell.swift */; };
+		6F04442122213CAA00D4C84A /* UIImageEffects+Accelerate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F04442022213CAA00D4C84A /* UIImageEffects+Accelerate.swift */; };
 		6F0AA9032209D5D000121CFD /* BaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0AA9022209D5D000121CFD /* BaseProtocol.swift */; };
 		6F0AA9052209E5C600121CFD /* PlayListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0AA9042209E5C600121CFD /* PlayListTableView.swift */; };
 		6F0AA9072209F6AC00121CFD /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0AA9062209F6AC00121CFD /* DateExtensions.swift */; };
@@ -59,6 +60,7 @@
 		6F01944021F5BE6000DA9551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6F01EA612200728D008A08B2 /* PlayListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListDataSource.swift; sourceTree = "<group>"; };
 		6F01EA63220072EC008A08B2 /* PlayListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListTableViewCell.swift; sourceTree = "<group>"; };
+		6F04442022213CAA00D4C84A /* UIImageEffects+Accelerate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageEffects+Accelerate.swift"; sourceTree = "<group>"; };
 		6F0AA9022209D5D000121CFD /* BaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProtocol.swift; sourceTree = "<group>"; };
 		6F0AA9042209E5C600121CFD /* PlayListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayListTableView.swift; sourceTree = "<group>"; };
 		6F0AA9062209F6AC00121CFD /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			children = (
 				6F1AF7CF21F826D70011CB58 /* UILablExtensions.swift */,
 				6F1AF7CE21F826D70011CB58 /* UIImageExtensions.swift */,
+				6F04442022213CAA00D4C84A /* UIImageEffects+Accelerate.swift */,
 				6F0AA90A2209F75800121CFD /* UITableViewExtensions.swift */,
 			);
 			path = UIKit;
@@ -473,6 +476,7 @@
 				6FF5F73F2204BDF500CCA03B /* PlayListStorage.swift in Sources */,
 				6F1AF7D421F826D70011CB58 /* BaseViewController.swift in Sources */,
 				6F1AF7BF21F7F3910011CB58 /* PlayListViewController.swift in Sources */,
+				6F04442122213CAA00D4C84A /* UIImageEffects+Accelerate.swift in Sources */,
 				6F1AF7D521F826D70011CB58 /* BaseTableViewCell.swift in Sources */,
 				6F0AA910220A008900121CFD /* BaseTableView.swift in Sources */,
 				6F1DB81A22018C030057F72D /* PlayListHeaderView.swift in Sources */,
