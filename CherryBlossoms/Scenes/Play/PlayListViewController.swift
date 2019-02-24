@@ -20,7 +20,7 @@ class PlayListViewController: BaseLayoutViewController {
 	
 	fileprivate lazy var playTableView: PlayListTableView = {
 		[unowned self] in
-		var view = PlayListTableView.init(frame: self.view.frame, style: UITableView.Style.plain)
+		var view = PlayListTableView.init(frame: self.view.frame, style: UITableView.Style.grouped)
 		view.player = self.player
 		view.playlist = self.playlist
 		return view
@@ -38,13 +38,16 @@ class PlayListViewController: BaseLayoutViewController {
 		self.unregisterNotificationCenter()
 	}
 	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		
 		self.registerNotificationCenter()
 		
 		// Set Player PlayItems
 		player.playItems(self.playlist)
+		
+		// Set Header Info Action
+		bindHeaderInfoButton()
 		
 		// Set Control Action
 		bindControlCommandAction()
@@ -54,8 +57,8 @@ class PlayListViewController: BaseLayoutViewController {
 			self.playTableView.updateHeaderPlayItem(firstPlayItem)
 			self.player.playItem(firstPlayItem, playStart: false)
 		}
-    }
-
+	}
+	
 }
 
 // MARK: - Setup Layout
@@ -130,6 +133,13 @@ extension PlayListViewController {
 // MARK: - Control Action
 extension PlayListViewController {
 	
+	func bindHeaderInfoButton() {
+		// Info Button Action
+		self.playTableView.headerView.bindButtonAction { [weak self] in
+			self?.showInfoActionSheet()
+		}
+	}
+	
 	func bindControlCommandAction() {
 		controlView.bindButtonActionCommand { [weak self] (actionType, value) in
 			guard let player = self?.player, let controlView = self?.controlView else { return }
@@ -179,6 +189,29 @@ extension PlayListViewController {
 				parallaxHeaderView.refreshBlurViewForNewImage()
 			}
 		}
+	}
+	
+}
+
+// MARK: - ActionSheet
+extension PlayListViewController {
+	
+	func showInfoActionSheet() {
+		let optionMenu = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		
+		
+		let itemAction01 = UIAlertAction(title: "Author", style: .`default`, handler: {
+			(alert: UIAlertAction!) -> Void in
+		})
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+			(alert: UIAlertAction!) -> Void in
+		})
+		
+		optionMenu.addAction(itemAction01)
+		optionMenu.addAction(cancelAction)
+		
+		self.present(optionMenu, animated: true, completion: nil)
 	}
 	
 }

@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+
+typealias PlayListHeaderInfoButtonAction = () -> Void
 
 class PlayListHeaderView: BaseLayoutView {
+	
+	let disposeBag = DisposeBag()
 	
 	var playItem: PlayListItem? {
 		didSet {
@@ -28,6 +34,8 @@ class PlayListHeaderView: BaseLayoutView {
 			self.descLabel.text = desc
 		}
 	}
+	
+	private var infoButtonActionHandler: PlayListHeaderInfoButtonAction?
 	
 	private lazy var coverImgView: UIImageView = {
 		let imgView = UIImageView()
@@ -50,7 +58,7 @@ class PlayListHeaderView: BaseLayoutView {
 		view.backgroundColor = UIColor(hexString: "#d8d8d8")
 		return view
 	}()
-
+	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.textColor = UIColor(hexString: "#000000")
@@ -84,14 +92,22 @@ class PlayListHeaderView: BaseLayoutView {
 		return view
 	}()
 	
+	private lazy var infoButton: UIButton = {
+		var button = UIButton()
+		button.setImage(UIImage(named: "iconInfo"), for: UIControl.State.normal)
+		return button
+	}()
+	
 	deinit {
 		DDLogDebug("deinit")
 	}
 	
 	override func initialization() {
 		super.initialization()
+		
+		self.bindRxEvent()
 	}
-
+	
 }
 
 // MARK: - Setup Layout
@@ -103,6 +119,7 @@ extension PlayListHeaderView {
 		self.addSubview(shadowView)
 		self.addSubview(circleView)
 		self.addSubview(coverImgView)
+		self.addSubview(infoButton)
 		self.addSubview(titleLabel)
 		self.addSubview(artistNameLabel)
 		self.addSubview(descLabel)
@@ -129,6 +146,11 @@ extension PlayListHeaderView {
 			self.circleView.layer.cornerRadius = 80.0 / 2
 		}
 		
+		infoButton.snp.makeConstraints { (make) in
+			make.top.equalTo(self).offset(10.0)
+			make.right.equalTo(self).offset(-20.0)
+		}
+		
 		titleLabel.snp.makeConstraints { (make) in
 			make.top.equalTo(self.coverImgView.snp.bottom).offset(15.0)
 			make.left.equalTo(self).offset(20.0)
@@ -153,6 +175,32 @@ extension PlayListHeaderView {
 		bottomLineView.snp.makeConstraints { (make) in
 			make.left.right.bottom.equalTo(self)
 			make.height.equalTo(1.0)
+		}
+	}
+	
+}
+
+// MARK: - Rx Binding
+extension PlayListHeaderView {
+	
+	func bindRxEvent() {
+		infoButton.rx.tap
+			.bind(onNext: { [unowned self] _ in
+				self.executeInfoButtonAction()
+			}).disposed(by: disposeBag)
+	}
+}
+
+// MARK: - Button Action Handler
+extension PlayListHeaderView {
+	
+	func bindButtonAction(handler: (PlayListHeaderInfoButtonAction)? = nil) {
+		infoButtonActionHandler = handler
+	}
+	
+	private func executeInfoButtonAction() {
+		if let h = self.infoButtonActionHandler {
+			h()
 		}
 	}
 	

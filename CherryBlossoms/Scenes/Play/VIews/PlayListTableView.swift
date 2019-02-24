@@ -26,7 +26,7 @@ class PlayListTableView: BaseLayoutTableView {
 	
 	fileprivate var playListDataSource: PlayListDataSource!
 	
-	fileprivate lazy var headerView: PlayListHeaderView = {
+	lazy var headerView: PlayListHeaderView = {
 		var headerView = PlayListHeaderView(frame: CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: 300.0))
 		return headerView
 	}()
@@ -55,11 +55,11 @@ extension PlayListTableView {
 		self.tableHeaderView = parallaxHeaderView
 		self.dataSource = playListDataSource.register(for: self)
 		self.delegate = self
-		self.separatorColor = UIColor.white
+		self.separatorColor = UIColor.clear
 		self.backgroundColor = UIColor.white
 		self.bounces = false
 	}
-
+	
 	func setupLayout() {
 		
 	}
