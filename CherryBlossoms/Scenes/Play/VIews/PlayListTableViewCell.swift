@@ -93,6 +93,7 @@ class PlayListTableViewCell: BaseLayoutTableViewCell {
 extension PlayListTableViewCell {
 	
 	func setupView() {
+		self.backgroundColor = UIColor(hexString: "#F7F7F7")
 		self.contentView.backgroundColor = UIColor(hexString: "#F7F7F7")
 		
 		self.contentView.addSubview(numberLabel)
