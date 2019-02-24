@@ -10,15 +10,17 @@ import UIKit
 
 class ParallaxHeaderView: UIView {
 	
-	fileprivate let isActiveBlur: Bool = false
+	fileprivate let isActiveBasicBlur: Bool = false
+	fileprivate let isActiveBlurEffect: Bool = true
 	
 	fileprivate var headerImage: UIImage?
 	fileprivate var imageScrollView: UIScrollView?
 	fileprivate var subView: UIView?
 	fileprivate var imageView: UIImageView?
 	fileprivate var bluredImageView: UIImageView?
+	fileprivate var blurEffectView: UIVisualEffectView?
 	
-	fileprivate let kParallaxDeltaFactor: CGFloat = 1.0
+	fileprivate let kParallaxDeltaFactor: CGFloat = 0.9
 	fileprivate var kDefaultHeaderFrame: CGRect {
 		get {
 			return CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: self.frame.size.height)
@@ -58,8 +60,28 @@ class ParallaxHeaderView: UIView {
 			self.clipsToBounds = false
 		}
 		
-		if offset.y > 0.0 && isActiveBlur {
-			self.bluredImageView?.alpha = 1 / kDefaultHeaderFrame.size.height * offset.y * 2
+		if offset.y > 0.0 {
+			if isActiveBasicBlur {
+				self.bluredImageView?.alpha = 1 / kDefaultHeaderFrame.size.height * offset.y * 2
+			}
+			if isActiveBlurEffect {
+				self.blurEffectView?.alpha = 1 / kDefaultHeaderFrame.size.height * offset.y
+			}
+		}
+	}
+	
+	func refreshBlurViewForNewImage() {
+		if isActiveBasicBlur {
+			let alpha = self.bluredImageView?.alpha ?? 0.0
+			
+			self.bluredImageView?.alpha = 0.0
+			self.bluredImageView?.image = nil
+			
+			if let screenShot = self.screenShotOfView(self),
+				let blueScreenShot = screenShot.appliedBlur(withRadius: 5.0, tintColor: UIColor(white: 0.6, alpha: 0.2), saturationDeltaFactor: 1.0, maskImage: nil) {
+				self.bluredImageView?.image = blueScreenShot
+				self.bluredImageView?.alpha = alpha
+			}
 		}
 	}
 	
@@ -80,46 +102,85 @@ extension ParallaxHeaderView {
 		
 		self.addSubview(self.imageScrollView!)
 		
-		self.initialBluredImageView()
-		self.refreshBlurViewForNewImage()
+		if isActiveBasicBlur {
+			self.initialBluredImageView()
+			self.refreshBlurViewForNewImage()
+		}
+		if isActiveBlurEffect {
+			self.initialBlurEffectView()
+		}
 	}
 	
 	fileprivate func initialSetupForCustomSubView(_ subView: UIView) {
 		let scrollView = UIScrollView.init(frame: self.bounds)
 		self.imageScrollView = scrollView
+		self.imageScrollView?.backgroundColor = .clear
 		self.subView = subView
 		subView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin, .flexibleHeight, .flexibleWidth]
 		self.imageScrollView?.addSubview(subView)
 		
 		self.addSubview(self.imageScrollView!)
 		
-		self.initialBluredImageView()
-		self.refreshBlurViewForNewImage()
+		if isActiveBasicBlur {
+			self.initialBluredImageView()
+			self.refreshBlurViewForNewImage()
+		}
+		if isActiveBlurEffect {
+			self.initialBlurEffectView()
+		}
 	}
+	
 }
 
 extension ParallaxHeaderView {
 	
 	fileprivate func initialBluredImageView() {
-		self.bluredImageView = UIImageView.init(frame: self.imageScrollView!.frame)
-		self.bluredImageView?.autoresizingMask = self.imageScrollView!.autoresizingMask
+		guard let imageScrollView = self.imageScrollView else {
+			return
+		}
+		
+		self.bluredImageView = UIImageView.init(frame: imageScrollView.frame)
+		self.bluredImageView?.autoresizingMask = imageScrollView.autoresizingMask
 		self.bluredImageView?.alpha = 0.0
-		self.imageScrollView?.addSubview(self.bluredImageView!)
+		imageScrollView.addSubview(self.bluredImageView!)
 	}
 	
 	fileprivate func screenShotOfView(_ view: UIView) -> UIImage? {
-		UIGraphicsBeginImageContextWithOptions(kDefaultHeaderFrame.size, true, 0.0)
-		self.drawHierarchy(in: kDefaultHeaderFrame, afterScreenUpdates: false)
-		let image = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext()
-		return image
+		guard let imageScrollView = self.imageScrollView else {
+			return nil
+		}
+		
+		let drawRect = CGRect(x: imageScrollView.frame.origin.x,
+							  y: -imageScrollView.frame.origin.y,
+							  width: imageScrollView.frame.size.width,
+							  height: imageScrollView.frame.size.height)
+		
+		if #available(iOS 10.0, *) {
+			let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
+			let capturedImage = renderer.image {
+				(ctx) in
+				view.drawHierarchy(in: drawRect, afterScreenUpdates: true)
+			}
+			return capturedImage
+		} else {
+			UIGraphicsBeginImageContextWithOptions((view.bounds.size), false, 0.0)
+			view.drawHierarchy(in: drawRect, afterScreenUpdates: true)
+			let capturedImage = UIGraphicsGetImageFromCurrentImageContext()
+			UIGraphicsEndImageContext()
+			return capturedImage
+		}
 	}
 	
-	func refreshBlurViewForNewImage() {
-		if let screenShot = self.screenShotOfView(self),
-			let blueScreenShot = screenShot.appliedBlur(withRadius: 0.5, tintColor: UIColor.init(white: 0.6, alpha: 0.2), saturationDeltaFactor: 1.0, maskImage: nil) {
-			self.bluredImageView?.image = blueScreenShot
-		}
+	fileprivate func initialBlurEffectView() {
+		guard let imageScrollView = self.imageScrollView else { return }
+		
+		let blurEffect = UIBlurEffect(style: .extraLight)
+		let blurView = UIVisualEffectView(effect: blurEffect)
+		blurView.frame = imageScrollView.bounds
+		blurView.alpha = 0.0
+		self.blurEffectView  = blurView
+		
+		imageScrollView.addSubview(blurView)
 	}
 }
 

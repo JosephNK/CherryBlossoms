@@ -55,14 +55,6 @@ class PlayListViewController: BaseLayoutViewController {
 			self.player.playItem(firstPlayItem, playStart: false)
 		}
     }
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		if let parallaxHeaderView = self.playTableView.tableHeaderView as? ParallaxHeaderView {
-			parallaxHeaderView.refreshBlurViewForNewImage()
-		}
-	}
 
 }
 
@@ -125,6 +117,8 @@ extension PlayListViewController {
 		
 		self.playTableView.updateHeaderPlayItem(self.player.currentPlayItem as? PlayListItem)
 		self.playTableView.updateReloadData()
+		
+		//self.asyncRefreshBlurView()
 	}
 	
 	@objc func onPlaybackStateChanged() {
@@ -170,6 +164,19 @@ extension PlayListViewController {
 			
 			if (actionType != .Shuffle && actionType != .Repeat) {
 				controlView.isPlaying = player.isPlaying
+			}
+		}
+	}
+	
+}
+
+// MARK: - ParallaxHeaderView
+extension PlayListViewController {
+	
+	func asyncRefreshBlurView() {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+			if let parallaxHeaderView = self.playTableView.tableHeaderView as? ParallaxHeaderView {
+				parallaxHeaderView.refreshBlurViewForNewImage()
 			}
 		}
 	}
