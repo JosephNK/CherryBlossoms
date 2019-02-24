@@ -47,7 +47,9 @@ class ParallaxHeaderView: UIView {
 		
 		var frame = imageScrollView.frame
 		
-		if offset.y > 0.0 {
+		let isUpOffex = offset.y > 0.0
+		
+		if isUpOffex {
 			frame.origin.y = max(offset.y * kParallaxDeltaFactor, 0.0)
 			imageScrollView.frame = frame
 			self.clipsToBounds = true
@@ -60,12 +62,16 @@ class ParallaxHeaderView: UIView {
 			self.clipsToBounds = false
 		}
 		
-		if offset.y > 0.0 {
+		if isUpOffex {
 			if isActiveBasicBlur {
 				self.bluredImageView?.alpha = 1 / kDefaultHeaderFrame.size.height * offset.y * 2
 			}
 			if isActiveBlurEffect {
 				self.blurEffectView?.alpha = 1 / kDefaultHeaderFrame.size.height * offset.y
+			}
+		} else {
+			if offset.y <= 0.0 && isActiveBlurEffect {
+				self.blurEffectView?.alpha = 0.0
 			}
 		}
 	}

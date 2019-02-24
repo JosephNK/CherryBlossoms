@@ -59,6 +59,12 @@ class PlayListHeaderView: BaseLayoutView {
 		return view
 	}()
 	
+	public lazy var infoButton: UIButton = {
+		var button = UIButton()
+		button.setImage(UIImage(named: "iconInfo"), for: UIControl.State.normal)
+		return button
+	}()
+	
 	private lazy var titleLabel: UILabel = {
 		let label = UILabel()
 		label.textColor = UIColor(hexString: "#000000")
@@ -90,12 +96,6 @@ class PlayListHeaderView: BaseLayoutView {
 		let view = UIView()
 		view.backgroundColor = UIColor(hexString: "#e6e6e6")
 		return view
-	}()
-	
-	private lazy var infoButton: UIButton = {
-		var button = UIButton()
-		button.setImage(UIImage(named: "iconInfo"), for: UIControl.State.normal)
-		return button
 	}()
 	
 	deinit {

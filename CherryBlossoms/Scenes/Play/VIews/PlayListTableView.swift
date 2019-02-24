@@ -109,6 +109,7 @@ extension PlayListTableView {
 		if let header = self.tableHeaderView as? ParallaxHeaderView {
 			header.layoutHeaderViewForScrollViewOffset(scrollView.contentOffset)
 		}
+		self.headerView.infoButton.alpha = (scrollView.contentOffset.y <= 0.0) ? 1.0 : 0.0
 	}
 	
 }
